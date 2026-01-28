@@ -1,14 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <ProjectReference Include="..\Cart.Domain\Cart.Domain.csproj" />
-    <ProjectReference Include="..\Cart.Application\Cart.Application.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>Abysalto.Retail.Modules.Cart.Infrastructure</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.23" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.23" />
+  </ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\Cart.Domain\Cart.Domain.csproj" />
+		<ProjectReference Include="..\Cart.Application\Cart.Application.csproj" />
+	</ItemGroup>
 </Project>

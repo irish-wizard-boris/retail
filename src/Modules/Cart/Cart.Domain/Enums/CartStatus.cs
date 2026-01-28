@@ -1,4 +1,4 @@
-namespace Abysalto.Retail.Modules.Cart.Domain.Enums
+namespace Abysalto.Retail.Modules.Cart.Domain.Enums;
 
 public enum CartStatus
 {
