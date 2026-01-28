@@ -31,7 +31,15 @@ public class CartRepository : ICartRepository
 
 	public async Task UpdateAsync(ShoppingCart cart)
 	{
-		_context.Carts.Update(cart);
+		var entry = _context.Entry(cart);
+
+		// If for some reason the entity isn't being tracked, attach it.
+		if (entry.State == EntityState.Detached)
+		{
+			_context.Carts.Attach(cart);
+			entry.State = EntityState.Modified;
+		}
+
 		await _context.SaveChangesAsync();
 	}
 }

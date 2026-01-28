@@ -37,6 +37,8 @@ public class ShoppingCart : EntityBase<Guid>, IAggregateRoot
         }
         else
         {
+            item.CartId = Id;
+            item.Cart = this;
             item.ItemAdded();
             Items.Add(item);
         }
