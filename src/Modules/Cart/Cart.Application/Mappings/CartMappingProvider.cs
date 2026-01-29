@@ -18,17 +18,17 @@ namespace Abysalto.Retail.Modules.Cart.Application
 		{
 			// Domain to DTOs with Reverse
 			CreateMap<ShoppingCart, CartDto>()
-			.ForMember(dest => dest.Status,
-				opt => opt.MapFrom(src => src.Status.ToString()))
-			.ForMember(dest => dest.Items,
-				opt => opt.MapFrom(src => src.Items))
-			.ReverseMap()
-			.ForMember(dest => dest.Status,
-				opt => opt.MapFrom(src => Enum.Parse<CartStatus>(src.Status, true)));
+				.ForMember(dest => dest.Status,
+					opt => opt.MapFrom(src => src.Status.ToString()))
+				.ForMember(dest => dest.Items,
+					opt => opt.MapFrom(src => src.Items))
+				.ReverseMap()
+				.ForMember(dest => dest.Status,
+					opt => opt.MapFrom(src => Enum.Parse<CartStatus>(src.Status, true)));
 
 			CreateMap<ShoppingCartItem, CartItemDto>()
-			.ForMember(dest => dest.Cart,
-				opt => opt.Ignore());
+				.ForMember(dest => dest.Cart,
+					opt => opt.Ignore());
 
 			CreateMap<CartItemDto, ShoppingCartItem>()
 				.ForMember(dest => dest.Cart,
@@ -37,16 +37,28 @@ namespace Abysalto.Retail.Modules.Cart.Application
 
 			// Requests to DTO
 			CreateMap<AddItemToCartRequest, CartItemDto>()
-			.ForMember(dest => dest.Id,
-				opt => opt.Ignore()) // generated later
-			.ForMember(dest => dest.CartId,
-				opt => opt.Ignore()) // set by application service
-			.ForMember(dest => dest.Cart,
-				opt => opt.Ignore()) // aggregate root controls this
-			.ForMember(dest => dest.AddedAt,
-				opt => opt.Ignore())
-			.ForMember(dest => dest.TotalPrice,
-				opt => opt.Ignore());
+				.ForMember(dest => dest.Id,
+					opt => opt.Ignore())
+				.ForMember(dest => dest.CartId,
+					opt => opt.Ignore())
+				.ForMember(dest => dest.Cart,
+					opt => opt.Ignore())
+				.ForMember(dest => dest.AddedAt,
+					opt => opt.Ignore())
+				.ForMember(dest => dest.TotalPrice,
+					opt => opt.Ignore());
+
+			CreateMap<UpdateItemInCartRequest, CartItemDto>()
+				.ForMember(dest => dest.Id,
+					opt => opt.Ignore())
+				.ForMember(dest => dest.CartId,
+					opt => opt.Ignore())
+				.ForMember(dest => dest.Cart,
+					opt => opt.Ignore())
+				.ForMember(dest => dest.AddedAt,
+					opt => opt.Ignore())
+				.ForMember(dest => dest.TotalPrice,
+					opt => opt.Ignore());
 
 
 			// DTOs to requests

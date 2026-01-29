@@ -18,9 +18,14 @@ public class CartRepository : ICartRepository
 
     public async Task<ShoppingCart?> GetByCustomerIdAsync(Guid customerId)
     {
-        return await _context.Carts
+        var cart = await _context.Carts
             .Include(x => x.Items)
-            .FirstOrDefaultAsync(x => x.CustomerId == customerId); 
+            .FirstOrDefaultAsync(x => x.CustomerId == customerId);
+        if (cart != null) 
+        {
+            cart.RecalculateTotals(); 
+        }
+        return cart;
     }
 
 	public async Task AddAsync(ShoppingCart cart)
@@ -29,17 +34,62 @@ public class CartRepository : ICartRepository
 		await _context.SaveChangesAsync();
 	}
 
-	public async Task UpdateAsync(ShoppingCart cart)
+	public async Task UpdateAsync()
 	{
-		var entry = _context.Entry(cart);
+		await _context.SaveChangesAsync();
+	}
 
-		// If for some reason the entity isn't being tracked, attach it.
-		if (entry.State == EntityState.Detached)
-		{
-			_context.Carts.Attach(cart);
-			entry.State = EntityState.Modified;
-		}
+    public async Task<ShoppingCart?> GetByIdAsync(Guid id)
+    {
+        return await _context.Carts
+            .Include(x => x.Items)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
 
+    public async Task<List<ShoppingCart>> GetAllAsync()
+    {
+        var carts = await _context.Carts
+            .Include(x => x.Items)
+            .ToListAsync();
+        carts.ForEach(c => c.RecalculateTotals());
+        return carts;
+    }
+
+    public async Task<ShoppingCartItem?> GetCartItemByIdAndCustomerAsync(Guid customerId, Guid productId)
+    {
+		return await _context.CartItems
+		    .FirstOrDefaultAsync(item =>
+			    item.ProductId == productId &&
+			    item.Cart.CustomerId == customerId);
+	}
+
+    public async Task DeleteSingleCartItemAsync(Guid customerId, Guid productId)
+    {
+        var cart = await _context.Carts
+            .Include(x => x.Items)
+            .FirstOrDefaultAsync(x => x.CustomerId == customerId);
+
+        if (cart == null) throw new CartDomainException("Cart not found.");
+
+		var itemToRemove = cart.Items.FirstOrDefault(i => i.ProductId == productId);
+
+        if (itemToRemove != null)
+        {
+            cart.Items.Remove(itemToRemove);
+            cart.RecalculateTotals();
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task DeleteAllCartItemsAsync(Guid customerId)
+    {
+		var cart = await _context.Carts
+			.Include(x => x.Items)
+			.FirstOrDefaultAsync(x => x.CustomerId == customerId);
+
+		if (cart == null) throw new CartDomainException("Cart not found.");
+
+        cart.Items.Clear();
 		await _context.SaveChangesAsync();
 	}
 }

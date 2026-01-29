@@ -6,8 +6,8 @@ namespace Abysalto.Retail.Modules.Cart.Domain.Entities;
 public class ShoppingCart : EntityBase<Guid>, IAggregateRoot
 {
     public Guid CustomerId { get; set; }
-    public CartStatus Status { get; set; } 
-    public DateTime CreatedAt { get; set; }
+    public CartStatus Status { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
 	public decimal TotalAmount { get; set; }
 	public int TotalItems { get; set; }
@@ -21,12 +21,18 @@ public class ShoppingCart : EntityBase<Guid>, IAggregateRoot
 
     public ShoppingCart(Guid customerId) : base()
     {
-        CustomerId = customerId;
+		Id = Guid.NewGuid();
+		CustomerId = customerId;
     }
 
     public decimal CalculateTotalAmount() => Items.Sum(item => item.UnitPrice * item.Quantity);
 
     public int CalculateTotalItems() => Items.Sum(item => item.Quantity);
+
+    public void SimpleAdd(ShoppingCartItem item)
+    {
+        Items.Add(item);
+    }
 
     public void AddItem(ShoppingCartItem item)
     {
@@ -37,8 +43,6 @@ public class ShoppingCart : EntityBase<Guid>, IAggregateRoot
         }
         else
         {
-            item.CartId = Id;
-            item.Cart = this;
             item.ItemAdded();
             Items.Add(item);
         }
@@ -63,6 +67,7 @@ public class ShoppingCart : EntityBase<Guid>, IAggregateRoot
 
     public void RecalculateTotals()
     {
+        Items.ForEach(cartItem => cartItem.RecalculateTotalPrice());
         TotalAmount = CalculateTotalAmount();
         TotalItems = CalculateTotalItems();
     }

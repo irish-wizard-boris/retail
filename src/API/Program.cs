@@ -1,5 +1,7 @@
 using System;
 using Abysalto.Retail.API.Filters;
+using Abysalto.Retail.API.Middleware;
+using Abysalto.Retail.Mock;
 using Abysalto.Retail.Modules.Cart.Application.Extensions;
 using Abysalto.Retail.Modules.Cart.Application.Services;
 using Abysalto.Retail.Modules.Cart.Contracts.Requests.Validation;
@@ -9,7 +11,6 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Abysalto.Retail.Mock;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,8 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 //app.UseAuthorization();
 app.MapControllers();

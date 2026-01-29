@@ -14,17 +14,29 @@ namespace Abysalto.Retail.Modules.Cart.Infrastructure.Data
 			builder.HasKey(i => i.Id);
 			builder.Property(i => i.Id)
 				.HasColumnName("Id")
-				.ValueGeneratedNever(); 
+				.ValueGeneratedNever()
+				.HasConversion(
+					v => v.ToString().ToLower(),
+					v => Guid.Parse(v)
+				);
 
 			builder.HasIndex(i => i.CartId);
 			builder.Property(i => i.CartId)
 				.HasColumnName("CartId")
-				.IsRequired();
+				.IsRequired()
+				.HasConversion(
+					v => v.ToString().ToLower(),
+					v => Guid.Parse(v)
+				);
 
 			builder.HasIndex(i => i.ProductId);
 			builder.Property(i => i.ProductId)
 				.HasColumnName("ProductId")
-				.IsRequired();
+				.IsRequired()
+				.HasConversion(
+					v => v.ToString().ToLower(),
+					v => Guid.Parse(v)
+				);
 
 			builder.Property(i => i.Quantity)
 				.HasColumnName("Quantity")

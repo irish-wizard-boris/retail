@@ -19,12 +19,20 @@ namespace Abysalto.Retail.Modules.Cart.Infrastructure.Data
 			builder.HasKey(c => c.Id);
 			builder.Property(c => c.Id)
 				.HasColumnName("Id")
-				.ValueGeneratedNever();
+				.ValueGeneratedNever()
+				.HasConversion(
+					v => v.ToString().ToLower(),
+					v => Guid.Parse(v)
+				); 
 
 			builder.HasIndex(c => c.CustomerId);
 			builder.Property(c => c.CustomerId)
 				.HasColumnName("CustomerId")
-				.IsRequired();
+				.IsRequired()
+				.HasConversion(
+					v => v.ToString().ToLower(),
+					v => Guid.Parse(v)
+				);
 
 			builder.Property(c => c.Status)
 				.HasColumnName("Status")

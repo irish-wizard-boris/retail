@@ -17,6 +17,9 @@ namespace Abysalto.Retail.Modules.Cart.Infrastructure.Data
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
+			optionsBuilder
+				.LogTo(Console.WriteLine, LogLevel.Debug) // Logs to Console
+				.EnableSensitiveDataLogging();
 			base.OnConfiguring(optionsBuilder);
 		}
 
@@ -24,58 +27,9 @@ namespace Abysalto.Retail.Modules.Cart.Infrastructure.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<ShoppingCart>(builder =>
-			{
-				builder.ToTable("Carts");
-				builder.HasKey(c => c.Id);
+			modelBuilder.ApplyConfiguration(new CartConfiguration());
+			modelBuilder.ApplyConfiguration(new CartItemConfiguration());
 
-				builder.HasMany(c => c.Items)
-					   .WithOne(i => i.Cart)
-					   .HasForeignKey(i => i.CartId)
-					   .OnDelete(DeleteBehavior.Cascade);
-
-				builder.Ignore(c => c.TotalAmount);
-				builder.Ignore(c => c.TotalItems);
-
-				builder.Property(x => x.Id)
-					.HasConversion(
-						v => v.ToString().ToLower(),
-						v => Guid.Parse(v)          
-					);
-
-				builder.Property(x => x.CustomerId)
-					.HasConversion(
-						v => v.ToString().ToLower(),
-						v => Guid.Parse(v)          
-					);
-
-			});
-
-			modelBuilder.Entity<ShoppingCartItem>(builder =>
-			{
-				builder.ToTable("CartItems");
-				builder.HasKey(i => i.Id);
-
-				builder.Ignore(i => i.TotalPrice);
-
-				builder.Property(x => x.Id)
-					.HasConversion(
-						v => v.ToString().ToLower(),
-						v => Guid.Parse(v)
-					);
-
-				builder.Property(x => x.CartId)
-					.HasConversion(
-						v => v.ToString().ToLower(),
-						v => Guid.Parse(v)
-					);
-
-				builder.Property(x => x.ProductId)
-					.HasConversion(
-						v => v.ToString().ToLower(),
-						v => Guid.Parse(v)
-					);
-			});
 		}
 
 		public override int SaveChanges()
