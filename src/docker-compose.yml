@@ -1,0 +1,10 @@
+services:
+  cart-api:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/cart.db
+    volumes:
+      - ./database:/app/data

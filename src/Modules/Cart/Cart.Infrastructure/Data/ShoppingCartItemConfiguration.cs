@@ -64,7 +64,7 @@ namespace Abysalto.Retail.Modules.Cart.Infrastructure.Data
 				"Quantity > 0"));
 
 			builder.ToTable(t => t.HasCheckConstraint("CK_CartItem_Price",
-				"Price > 0"));
+				"UnitPrice > 0"));
 		}
 	}
 }
