@@ -40,8 +40,6 @@ Run the container using a **bind mount** so the SQLite database file on your hos
 **Windows (PowerShell):**
 
 ```powershell
-docker rm -f retail-api-instance
-
 docker run -d -p 5000:8080 --name retail-api-instance -v "${PWD}/db:/app/db" retail-api
 ```
 
@@ -62,4 +60,3 @@ http://localhost:5000/api/admin/cart
 * An empty JSON array `[]` if no carts exist
 * Or a list of cart objects if data is present
 
----
