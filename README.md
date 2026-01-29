@@ -8,9 +8,11 @@ An **ASP.NET Core 8 Web API** implemented as part of a **modular monolith archit
 
 Ensure the following tools are installed on your machine:
 
-* **.NET 8 SDK**
-* **Docker Desktop**
-* **EF Core CLI Tools**
+### 🔹 [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+### 🔹 [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+### 🔹 [EF Core CLI Tools](https://learn.microsoft.com/ef/core/cli/dotnet)
+
+Install command:
 
 ```bash
 dotnet tool install --global dotnet-ef
