@@ -62,13 +62,12 @@ http://localhost:5000/api/admin/cart
 
 ---
 
-### 📝 TODO List
+## 📝 TODO List
 
 - Review and tidy up code structure
-- Optimize `Program.cs`
 - Use internal classes to enforce proper DDD boundaries
 - Add unit tests
-
-
+- Optimize `Program.cs`
+- Optimize `Dockerfile.txt`
 
 

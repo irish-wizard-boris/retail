@@ -1,20 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <ProjectGuid>{73A54AF8-AB05-A8BD-B517-C57D60FD5D40}</ProjectGuid>
-    <RootNamespace>Abysalto.Retail.Modules.Cart.Contracts</RootNamespace>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<NoWarn>$(NoWarn);1591</NoWarn>
-	<DocumentationFile>bin\Debug\net8.0\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="12.1.1" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>Abysalto.Retail.Modules.Cart.Contracts</RootNamespace>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+		<DocumentationFile>bin\$(Configuration)\net8.0\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
 	<ItemGroup>
-		<None Include="$(OutputPath)$(AssemblyName).xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
+		<PackageReference Include="FluentValidation" Version="12.1.1" />
 	</ItemGroup>
 </Project>

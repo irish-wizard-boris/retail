@@ -1,17 +1,36 @@
+# Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy everything at once
-COPY . .
+# --- Copy solution & csproj files first ---
+COPY API/API.sln ./API/
+COPY API/*.csproj ./API/
+COPY Modules/Cart/Cart.Contracts/*.csproj ./Modules/Cart/Cart.Contracts/
+COPY Modules/Cart/Cart.Domain/*.csproj ./Modules/Cart/Cart.Domain/
+COPY Modules/Cart/Cart.Infrastructure/*.csproj ./Modules/Cart/Cart.Infrastructure/
+COPY Modules/Cart/Cart.Application/*.csproj ./Modules/Cart/Cart.Application/
+COPY Mock/*.csproj ./Mock/
 
-# Restore specifically the API
-RUN dotnet restore "API/API.csproj"
+# --- Copy full source code ---
+COPY API/ API/
+COPY Modules/Cart/Cart.Contracts/ Modules/Cart/Cart.Contracts/
+COPY Modules/Cart/Cart.Domain/ Modules/Cart/Cart.Domain/
+COPY Modules/Cart/Cart.Infrastructure/ Modules/Cart/Cart.Infrastructure/
+COPY Modules/Cart/Cart.Application/ Modules/Cart/Cart.Application/
+COPY Mock/ Mock/
 
-# Build
+# --- Restore and build all projects (generate XML docs) ---
+RUN dotnet restore "API/API.sln"
+RUN dotnet build "API/API.sln" -c Release
+
+# --- Publish only API ---
 WORKDIR "/src/API"
-RUN dotnet publish "API.csproj" -c Release -o /out
+RUN dotnet publish "API.csproj" -c Release -o /out /p:GenerateDocumentationFile=true
 
+# Stage 2: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /out .
 ENTRYPOINT ["dotnet", "API.dll"]
+
+
