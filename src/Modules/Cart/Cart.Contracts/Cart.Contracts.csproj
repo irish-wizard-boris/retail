@@ -5,8 +5,16 @@
     <Nullable>enable</Nullable>
     <ProjectGuid>{73A54AF8-AB05-A8BD-B517-C57D60FD5D40}</ProjectGuid>
     <RootNamespace>Abysalto.Retail.Modules.Cart.Contracts</RootNamespace>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<NoWarn>$(NoWarn);1591</NoWarn>
+	<DocumentationFile>bin\Debug\net8.0\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.1.1" />
   </ItemGroup>
+	<ItemGroup>
+		<None Include="$(OutputPath)$(AssemblyName).xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 </Project>

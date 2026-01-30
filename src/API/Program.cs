@@ -1,3 +1,4 @@
+using System.Reflection;
 using Abysalto.Retail.API.Filters;
 using Abysalto.Retail.API.Middleware;
 using Abysalto.Retail.Mock;
@@ -8,6 +9,7 @@ using Abysalto.Retail.Modules.Cart.Infrastructure.Extensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -64,6 +66,37 @@ if (string.IsNullOrEmpty(connectionString))
 builder.Services.AddDbContext<CartDbContext>(options =>
 	options.UseSqlite(connectionString)
 );
+
+builder.Services.AddSwaggerGen(options =>
+{
+	// Basic Swagger info
+	options.SwaggerDoc("v1", new OpenApiInfo
+	{
+		Title = "Abysalto Retail API",
+		Version = "v1",
+		Description = "API for managing carts and related operations"
+	});
+
+	// Base path where DLLs and XML files are output
+	var basePath = AppContext.BaseDirectory;
+
+	// List all XML documentation files you want to include
+	var xmlFiles = new[]
+	{
+		Path.Combine(basePath, "API.xml"),
+		Path.Combine(basePath, "Cart.Contracts.xml")
+        // Add other projects here if needed
+    };
+
+	// Include only existing XML files
+	foreach (var xmlFile in xmlFiles)
+	{
+		if (File.Exists(xmlFile))
+		{
+			options.IncludeXmlComments(xmlFile, includeControllerXmlComments: true);
+		}
+	}
+});
 
 var app = builder.Build();
 

@@ -60,3 +60,15 @@ http://localhost:5000/api/admin/cart
 * An empty JSON array `[]` if no carts exist
 * Or a list of cart objects if data is present
 
+---
+
+### 📝 TODO List
+
+- Review and tidy up code structure
+- Optimize `Program.cs`
+- Use internal classes to enforce proper DDD boundaries
+- Add unit tests
+
+
+
+
